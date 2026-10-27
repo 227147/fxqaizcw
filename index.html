@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>青瓷账房 · 瓷板理财所</title>
+  <meta name="description" content="青瓷窑口风理财工具：复利推演、目标缺口、债务分期、配置罗盘，全部真实公式本地计算。" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 左侧竖排书签栏 -->
+  <aside class="rail" id="chapters">
+    <div class="seal" aria-hidden="true">青瓷<br>账房</div>
+    <a href="#comp"><b>壹</b><span>复利推演</span></a>
+    <a href="#goal"><b>贰</b><span>目标缺口</span></a>
+    <a href="#loan"><b>叁</b><span>债务分期</span></a>
+    <a href="#alloc"><b>肆</b><span>配置罗盘</span></a>
+  </aside>
+
+  <div class="ledger">
+
+    <!-- 瓷板刊头 -->
+    <header class="masthead">
+      <div class="mast-body">
+        <p class="over-title">CELADON HOUSE · 貳〇貳陸</p>
+        <h1>青 瓷 账 房</h1>
+        <p class="under-title">复利推演 · 目标缺口 · 债务分期 · 配置罗盘</p>
+      </div>
+      <div class="crackle" aria-hidden="true"></div>
+    </header>
+
+    <main>
+
+      <!-- ═══ 壹 复利推演 ═══ -->
+      <section class="chapter" id="comp">
+        <div class="ch-head">
+          <b>壹</b>
+          <div>
+            <h2>复利推演</h2>
+            <p>本金与月存，在时间里的形状</p>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label>期初本金 <span>元</span>
+            <input type="number" id="cPv" value="50000" min="0" step="1000" />
+          </label>
+          <label>每月存入 <span>元</span>
+            <input type="number" id="cPmt" value="2000" min="0" step="100" />
+          </label>
+          <label>年化利率 <span>%</span>
+            <input type="number" id="cRate" value="4" min="0" max="30" step="0.1" />
+          </label>
+          <label>推演年限 <span>年</span>
+            <input type="number" id="cYears" value="20" min="1" max="50" step="1" />
+          </label>
+          <button class="go" id="cGo">推 演</button>
+        </div>
+
+        <div class="triptych" id="cResult" hidden>
+          <div class="tri"><small>期满终值</small><b id="cFv">—</b></div>
+          <div class="tri"><small>累计投入</small><b id="cCost">—</b></div>
+          <div class="tri cinnabar"><small>利息所得</small><b id="cInt">—</b></div>
+        </div>
+
+        <div class="chart-frame" id="cChartFrame" hidden>
+          <canvas id="cChart" height="230"></canvas>
+          <p class="axis-note">横轴 · 年份　纵轴 · 元</p>
+        </div>
+
+        <div class="table-frame" id="cTableFrame" hidden>
+          <table>
+            <thead><tr><th>年份</th><th>年末余额</th><th>本年存入</th><th>本年利息</th></tr></thead>
+            <tbody id="cTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="deco-rule" aria-hidden="true"></div>
+
+      <!-- ═══ 贰 目标缺口 ═══ -->
+      <section class="chapter" id="goal">
+        <div class="ch-head">
+          <b>贰</b>
+          <div>
+            <h2>目标缺口</h2>
+            <p>从现在的数字，到你要的那个数字</p>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label>目标金额 <span>元</span>
+            <input type="number" id="gTarget" value="1000000" min="1" step="10000" />
+          </label>
+          <label>现有储蓄 <span>元</span>
+            <input type="number" id="gHave" value="100000" min="0" step="5000" />
+          </label>
+          <label>期望年限 <span>年</span>
+            <input type="number" id="gYears" value="10" min="1" max="50" step="1" />
+          </label>
+          <label>年化利率 <span>%</span>
+            <input type="number" id="gRate" value="3" min="0" max="30" step="0.1" />
+          </label>
+          <button class="go" id="gGo">测 算</button>
+        </div>
+
+        <div class="answer-plate" id="gResult" hidden>
+          <div class="answer">
+            <small>每月需存入</small>
+            <b id="gPmt">—</b>
+          </div>
+          <div class="answer-sub">
+            <p id="gLine">—</p>
+            <div class="meter"><i id="gBar"></i></div>
+            <p class="meter-note" id="gNote">—</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="deco-rule" aria-hidden="true"></div>
+
+      <!-- ═══ 叁 债务分期 ═══ -->
+      <section class="chapter" id="loan">
+        <div class="ch-head">
+          <b>叁</b>
+          <div>
+            <h2>债务分期</h2>
+            <p>等额本息的每一笔去向</p>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label>借款本金 <span>元</span>
+            <input type="number" id="lP" value="300000" min="1" step="10000" />
+          </label>
+          <label>年化利率 <span>%</span>
+            <input type="number" id="lRate" value="4.1" min="0" max="36" step="0.01" />
+          </label>
+          <label>期限 <span>月</span>
+            <input type="number" id="lN" value="360" min="1" max="600" step="12" />
+          </label>
+          <button class="go" id="lGo">摊 还</button>
+        </div>
+
+        <div class="triptych" id="lResult" hidden>
+          <div class="tri"><small>每月月供</small><b id="lM">—</b></div>
+          <div class="tri"><small>还款总额</small><b id="lTotal">—</b></div>
+          <div class="tri cinnabar"><small>利息总额</small><b id="lInt">—</b></div>
+        </div>
+
+        <div class="table-frame" id="lTableFrame" hidden>
+          <table>
+            <thead><tr><th>期数</th><th>月供</th><th>偿还本金</th><th>支付利息</th><th>剩余本金</th></tr></thead>
+            <tbody id="lTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="deco-rule" aria-hidden="true"></div>
+
+      <!-- ═══ 肆 配置罗盘 ═══ -->
+      <section class="chapter" id="alloc">
+        <div class="ch-head">
+          <b>肆</b>
+          <div>
+            <h2>配置罗盘</h2>
+            <p>五个问题，校准你的风险方位</p>
+          </div>
+        </div>
+
+        <ol class="quiz" id="quiz"></ol>
+
+        <button class="go wide" id="aGo">校 准 罗 盘</button>
+
+        <div class="compass" id="aResult" hidden>
+          <div class="compass-plate">
+            <small>方位判定</small>
+            <b id="aName">—</b>
+            <span id="aDesc">—</span>
+          </div>
+          <div class="alloc-bars" id="aBars"></div>
+          <div class="alloc-sample" id="aSample"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
